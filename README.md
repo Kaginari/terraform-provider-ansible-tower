@@ -32,7 +32,7 @@ make install
 
 
 ````bash
-cd example
+cd examples
 docker-compose up -d
 ````
 
@@ -53,6 +53,6 @@ follow the [Installation](#Installation)
 **3: Use the provider**
 
 ````bash
-cd example
+cd examples
 make apply
 ````
