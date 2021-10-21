@@ -14,3 +14,10 @@
 # Dependency directories (remove the comment below to include it)
 # vendor/
 venv
+.idea
+**/*.tfstate
+**/*.tfstate.*
+**/.terraform
+**/.terraform.lock.hcl
+**/terraform.tfstate.backup
+**/terraform.tfstate
