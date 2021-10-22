@@ -7,6 +7,7 @@ import (
 const (
 	InventoryResourceName       = "Ansible tower inventory"
 	OrganisationResourceName	= "Ansible tower Organisation"
+	InventorySourceResourceName = "Ansible tower inventory source"
 )
 func DiagsError(resource string, err error) diag.Diagnostics {
 	return DiagnosticsMessage(
@@ -43,3 +44,10 @@ func DiagDeleteFail(resource, details string) diag.Diagnostics {
 		fmt.Sprintf("Fail to delete %s, %s", resource, details),
 	)
 }
+func DiagCreateFail(resource string, err error) diag.Diagnostics {
+	return DiagnosticsMessage(
+		fmt.Sprintf("Unable to create %s", resource),
+		fmt.Sprintf("Unable to create %s got %s", resource, err.Error()),
+	)
+}
+
