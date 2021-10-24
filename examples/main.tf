@@ -63,10 +63,19 @@ resource "ansible-tower_inventory_source" "source_custom_script" {
   source = "custom"
   source_script = ansible-tower_inventory_script.script.id
 }
+
+resource "ansible-tower_project" "vault" {
+  name                 = "vault cluster playbook"
+  scm_type             = "git"
+  scm_url              = "https://gitlab.com/nt-factory/2021/admin/vault"
+  scm_branch           = "feature/centos8-v2"
+  scm_update_on_launch = true
+  organisation_id      = ansible-tower_organisation.organisation.id
+}
 resource "ansible-tower_inventory_source" "source" {
   name = "cfdfdxcx"
   inventory_id = ansible-tower_inventory.inventory.id
-  source_project_id = 6
+  source_project_id = ansible-tower_project.vault.id
   source_path= ""
   source = "scm"
 

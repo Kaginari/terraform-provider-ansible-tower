@@ -39,6 +39,7 @@ func Provider() *schema.Provider {
 		"ansible-tower_organisation": resourceOrganization(),
 		"ansible-tower_inventory_source": resourceInventorySource(),
 		"ansible-tower_inventory_script": resourceInventoryScript(),
+		"ansible-tower_project": resourceProject(),
 		},
 		DataSourcesMap: map[string]*schema.Resource{
 
