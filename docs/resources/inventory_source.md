@@ -1,5 +1,5 @@
 
-# ansible-tower_inventory_source
+**# ansible-tower_inventory_source
 
 `ansible-tower_inventory_source` Inventory source 
 * currently, supports [source](#source) : 
@@ -89,6 +89,6 @@ Ansible Tower Inventory source can be imported using the id, e.g. for an Invento
 
 ```sh
 $ terraform import ansible-tower_inventory.example 1033
-```
+```**
 
 
