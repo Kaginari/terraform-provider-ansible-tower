@@ -3,9 +3,9 @@ package tower
 import (
 	"context"
 	"fmt"
+	"github.com/Kaginari/ansible-tower-sdk/client"
 	"github.com/hashicorp/terraform-plugin-sdk/v2/diag"
 	"github.com/hashicorp/terraform-plugin-sdk/v2/helper/schema"
-	tower "github.com/mrcrilly/goawx/client"
 )
 
 func resourceOrganization() *schema.Resource {

@@ -3,12 +3,13 @@ package tower
 import (
 	"context"
 	"fmt"
+	tower "github.com/Kaginari/ansible-tower-sdk/client"
 	"strconv"
 
 	"github.com/hashicorp/terraform-plugin-sdk/v2/diag"
 	"github.com/hashicorp/terraform-plugin-sdk/v2/helper/schema"
 	"github.com/mitchellh/mapstructure"
-	tower "github.com/mrcrilly/goawx/client"
+
 
 )
 

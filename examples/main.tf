@@ -46,4 +46,28 @@ resource "ansible-tower_inventory" "inventory" {
     value = "[ a , b ]"
   }
 }
-//dGVzdGludmVudG9yeS4xMA==
+
+resource "ansible-tower_inventory_script" "script" {
+  name = "tf scriptssdsdddsds"
+  description = "dsdsd"
+  organization_id = ansible-tower_organisation.organisation.id
+  script = <<EOT
+#!/usr/bin/env python
+echo "hey"
+EOT
+
+}
+resource "ansible-tower_inventory_source" "source_custom_script" {
+  name = "cxcdsfdsffffx"
+  inventory_id = ansible-tower_inventory.inventory.id
+  source = "custom"
+  source_script = ansible-tower_inventory_script.script.id
+}
+resource "ansible-tower_inventory_source" "source" {
+  name = "cfdfdxcx"
+  inventory_id = ansible-tower_inventory.inventory.id
+  source_project_id = 6
+  source_path= ""
+  source = "scm"
+
+}

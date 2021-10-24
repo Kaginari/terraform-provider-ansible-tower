@@ -3,9 +3,9 @@ package tower
 import (
 	"context"
 	"crypto/tls"
+	"github.com/Kaginari/ansible-tower-sdk/client"
 	"github.com/hashicorp/terraform-plugin-sdk/v2/diag"
 	"github.com/hashicorp/terraform-plugin-sdk/v2/helper/schema"
-	tower "github.com/mrcrilly/goawx/client"
 	"net/http"
 )
 func Provider() *schema.Provider {
@@ -37,6 +37,8 @@ func Provider() *schema.Provider {
 		ResourcesMap: map[string]*schema.Resource{
 		"ansible-tower_inventory": resourceInventory(),
 		"ansible-tower_organisation": resourceOrganization(),
+		"ansible-tower_inventory_source": resourceInventorySource(),
+		"ansible-tower_inventory_script": resourceInventoryScript(),
 		},
 		DataSourcesMap: map[string]*schema.Resource{
 

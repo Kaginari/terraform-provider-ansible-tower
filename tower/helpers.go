@@ -8,11 +8,36 @@ const (
 	InventoryResourceName       = "Ansible tower inventory"
 	OrganisationResourceName	= "Ansible tower Organisation"
 	InventorySourceResourceName = "Ansible tower inventory source"
+	InventoryScriptResourceName = "Ansible tower inventory script"
 )
+const (
+	InfoColor    = "\033[1;34m[Info] : %s\033[0m"
+	NoticeColor  = "\033[1;36m[Notice] : %s\033[0m"
+	WarningColor = "\033[1;33m[Warn] : %s\033[0m"
+	ErrorColor   = "\033[1;31m[Error] : %s\033[0m"
+	DebugColor   = "\033[0;36m[Debug] : %s\033[0m"
+
+)
+
+func SprintError(message string) string {
+	return fmt.Sprintf(ErrorColor,message)
+}
+func SprintWarning(message string) string {
+	return fmt.Sprintf(WarningColor,message)
+}
+func SprintInfo(message string) string {
+	return fmt.Sprintf(InfoColor,message)
+}
+func SprintNotice(message string) string {
+	return fmt.Sprintf(NoticeColor,message)
+}
+func SprintDebug(message string) string {
+	return fmt.Sprintf(DebugColor,message)
+}
 func DiagsError(resource string, err error) diag.Diagnostics {
 	return DiagnosticsMessage(
-		fmt.Sprintf("Unable to create %s", resource),
-		fmt.Sprintf("Error %s", err.Error()),
+		SprintWarning(fmt.Sprintf("Unable to create %s", resource)),
+		SprintError(fmt.Sprintf("Error %s", err.Error())),
 	)
 }
 
@@ -27,27 +52,27 @@ func DiagnosticsMessage(summary string, details string) diag.Diagnostics {
 }
 func DiagNotFoundFail(resource string, id int, err error) diag.Diagnostics {
 	return DiagnosticsMessage(
-		fmt.Sprintf("Unable to fetch %s", resource),
-		fmt.Sprintf("Unable to load %s with id %d: got %s", resource, id, err.Error()),
+		SprintWarning(fmt.Sprintf("Unable to fetch %s", resource)),
+		SprintWarning(fmt.Sprintf("Unable to load %s with id %d: got %s", resource, id, err.Error())),
 	)
 }
 
 func DiagUpdateFail(resource string, id int, err error) diag.Diagnostics {
 	return DiagnosticsMessage(
-		fmt.Sprintf("Unable to update %s", resource),
-		fmt.Sprintf("Unable to update %s with id %d: got %s", resource, id, err.Error()),
+		SprintWarning(fmt.Sprintf("Unable to update %s", resource)),
+		SprintError(fmt.Sprintf("Unable to update %s with id %d: got %s", resource, id, err.Error())),
 	)
 }
 func DiagDeleteFail(resource, details string) diag.Diagnostics {
 	return DiagnosticsMessage(
-		fmt.Sprintf("%s delete faild", resource),
-		fmt.Sprintf("Fail to delete %s, %s", resource, details),
+		SprintWarning(fmt.Sprintf("%s delete faild", resource)),
+		SprintError(fmt.Sprintf("Fail to delete %s, %s", resource, details)),
 	)
 }
-func DiagCreateFail(resource string, err error) diag.Diagnostics {
+func DiagCreateFail(resource string, details string) diag.Diagnostics {
 	return DiagnosticsMessage(
-		fmt.Sprintf("Unable to create %s", resource),
-		fmt.Sprintf("Unable to create %s got %s", resource, err.Error()),
+		SprintWarning(fmt.Sprintf("Unable to create %s", resource)),
+		SprintError(details),
 	)
 }
 

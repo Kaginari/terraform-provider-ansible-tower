@@ -15,8 +15,8 @@ type Variable struct {
 
 func main()  {
 
-test2()
 }
+
 func test2() {
 	a := "test inventory"
 	id := 3
