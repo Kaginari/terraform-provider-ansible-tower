@@ -40,6 +40,7 @@ func Provider() *schema.Provider {
 		"ansible-tower_inventory_source": resourceInventorySource(),
 		"ansible-tower_inventory_script": resourceInventoryScript(),
 		"ansible-tower_project": resourceProject(),
+		"ansible-tower_job_template": resourceJobTemplate(),
 		},
 		DataSourcesMap: map[string]*schema.Resource{
 

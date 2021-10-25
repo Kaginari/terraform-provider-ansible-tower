@@ -65,10 +65,10 @@ resource "ansible-tower_inventory_source" "source_custom_script" {
 }
 
 resource "ansible-tower_project" "vault" {
-  name                 = "vault cluster playbook"
+  name                 = "test playbook"
   scm_type             = "git"
-  scm_url              = "https://gitlab.com/nt-factory/2021/admin/vault"
-  scm_branch           = "feature/centos8-v2"
+  scm_url              = "https://github.com/Kaginari/ansible-playbook-tower-test"
+  scm_branch           = "main"
   scm_update_on_launch = true
   organisation_id      = ansible-tower_organisation.organisation.id
 }
@@ -79,4 +79,12 @@ resource "ansible-tower_inventory_source" "source" {
   source_path= ""
   source = "scm"
 
+}
+resource "ansible-tower_job_template" "template" {
+  name           = "test-job-template"
+  job_type       = "run"
+  inventory_id   = ansible-tower_inventory.inventory.id
+  project_id     = ansible-tower_project.vault.id
+  playbook       = "main.yml"
+  become_enabled = true
 }

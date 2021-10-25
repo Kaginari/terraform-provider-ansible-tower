@@ -1,7 +1,7 @@
 
 # ansible-tower_project
 
-*TBD*
+
 
 ## Example Usage
 
@@ -14,7 +14,7 @@ resource "ansible-tower_project" "base_service_config" {
   name                 = "vault cluster playbook"
   scm_type             = "git"
   scm_url              = "https://gitlab.com/nt-factory/2021/admin/vault"
-  scm_branch           = "feature/centos8-v2"
+  scm_branch           = "feature/cluster-playbook"
   scm_update_on_launch = true
   organisation_id      = data.ansible-tower_organization.default.id
 }
