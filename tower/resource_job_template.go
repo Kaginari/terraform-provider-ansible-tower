@@ -7,6 +7,7 @@ import (
 	"github.com/hashicorp/terraform-plugin-sdk/v2/diag"
 	"github.com/hashicorp/terraform-plugin-sdk/v2/helper/schema"
 	"log"
+	"time"
 )
 
 func resourceJobTemplate() *schema.Resource {
@@ -29,7 +30,21 @@ func resourceJobTemplate() *schema.Resource {
 			"job_type": {
 				Type:        schema.TypeString,
 				Required:    true,
-				Description: "One of: run, check, scan",
+				Description: "One of: run, check",
+				ValidateFunc: func(val interface{}, key string) (warns []string, errs []error) {
+					value := val.(string)
+					isTrue := false
+					list := []string{"run", "check"}
+					for _, element := range list {
+						if element == value {
+							isTrue = true
+						}
+					}
+					if !isTrue {
+						errs = append(errs, fmt.Errorf("%q must be one of this elements %v, got: %d", key, list, value))
+					}
+					return
+				},
 			},
 			"inventory_id": {
 				Type:     schema.TypeInt,
@@ -59,6 +74,20 @@ func resourceJobTemplate() *schema.Resource {
 				Optional:    true,
 				Default:     0,
 				Description: "One of 0,1,2,3,4,5",
+				ValidateFunc: func(val interface{}, key string) (warns []string, errs []error) {
+					value := val.(int)
+					isTrue := false
+					list := []int{0,1,2,3,4,5}
+					for _, element := range list {
+						if element == value {
+							isTrue = true
+						}
+					}
+					if !isTrue {
+						errs = append(errs, fmt.Errorf("%q must be one of this elements %v, got: %d", key, list, value))
+					}
+					return
+				},
 			},
 			"extra_vars": {
 				Type:     schema.TypeString,
@@ -171,15 +200,14 @@ func resourceJobTemplate() *schema.Resource {
 				Default:  false,
 			},
 		},
-		//Importer: &schema.ResourceImporter{
-		//	State: schema.ImportStatePassthrough,
-		//},
-		//
-		//Timeouts: &schema.ResourceTimeout{
-		//	Create: schema.DefaultTimeout(1 * time.Minute),
-		//	Update: schema.DefaultTimeout(1 * time.Minute),
-		//	Delete: schema.DefaultTimeout(1 * time.Minute),
-		//},
+		Importer: &schema.ResourceImporter{
+			StateContext: schema.ImportStatePassthroughContext,
+		},
+		Timeouts: &schema.ResourceTimeout{
+			Create: schema.DefaultTimeout(1 * time.Minute),
+			Update: schema.DefaultTimeout(1 * time.Minute),
+			Delete: schema.DefaultTimeout(1 * time.Minute),
+		},
 	}
 }
 
@@ -187,40 +215,10 @@ func resourceJobTemplateCreate(ctx context.Context, data  *schema.ResourceData, 
 	var diags diag.Diagnostics
 	client := i.(*tower.AWX)
 	awxService := client.JobTemplateService
+	// TODO (depth) change sleep by getting project sync state
+	time.Sleep(10 * time.Second)
+	result, err := awxService.CreateJobTemplate(validateJobTemplateInput(data), map[string]string{})
 
-	result, err := awxService.CreateJobTemplate(map[string]interface{}{
-		"name":                     data.Get("name").(string),
-		"description":              data.Get("description").(string),
-		"job_type":                 data.Get("job_type").(string),
-		"inventory":                data.Get("inventory_id").(int),
-		"project":                  data.Get("project_id").(int),
-		"playbook":                 data.Get("playbook").(string),
-		"forks":                    data.Get("forks").(int),
-		"limit":                    data.Get("limit").(string),
-		"verbosity":                data.Get("verbosity").(int),
-		"extra_vars":               data.Get("extra_vars").(string),
-		"job_tags":                 data.Get("job_tags").(string),
-		"force_handlers":           data.Get("force_handlers").(bool),
-		"skip_tags":                data.Get("skip_tags").(string),
-		"start_at_task":            data.Get("start_at_task").(string),
-		"timeout":                  data.Get("timeout").(int),
-		"use_fact_cache":           data.Get("use_fact_cache").(bool),
-		"host_config_key":          data.Get("host_config_key").(string),
-		"ask_diff_mode_on_launch":  data.Get("ask_diff_mode_on_launch").(bool),
-		"ask_variables_on_launch":  data.Get("ask_variables_on_launch").(bool),
-		"ask_limit_on_launch":      data.Get("ask_limit_on_launch").(bool),
-		"ask_tags_on_launch":       data.Get("ask_tags_on_launch").(bool),
-		"ask_skip_tags_on_launch":  data.Get("ask_skip_tags_on_launch").(bool),
-		"ask_job_type_on_launch":   data.Get("ask_job_type_on_launch").(bool),
-		"ask_verbosity_on_launch":  data.Get("ask_verbosity_on_launch").(bool),
-		"ask_inventory_on_launch":  data.Get("ask_inventory_on_launch").(bool),
-		"ask_credential_on_launch": data.Get("ask_credential_on_launch").(bool),
-		"survey_enabled":           data.Get("survey_enabled").(bool),
-		"become_enabled":           data.Get("become_enabled").(bool),
-		"diff_mode":                data.Get("diff_mode").(bool),
-		"allow_simultaneous":       data.Get("allow_simultaneous").(bool),
-		"custom_virtualenv":        data.Get("custom_virtualenv").(string),
-	}, map[string]string{})
 	if err != nil {
 		log.Printf("Fail to Create Template %v", err)
 		diags = append(diags, diag.Diagnostic{
@@ -252,39 +250,7 @@ func resourceJobTemplateUpdate(ctx context.Context, data  *schema.ResourceData, 
 		return DiagNotFoundFail("job template", id, err)
 	}
 
-	_, err = awxService.UpdateJobTemplate(id, map[string]interface{}{
-		"name":                     data.Get("name").(string),
-		"description":              data.Get("description").(string),
-		"job_type":                 data.Get("job_type").(string),
-		"inventory":                data.Get("inventory_id").(string),
-		"project":                  data.Get("project_id").(int),
-		"playbook":                 data.Get("playbook").(string),
-		"forks":                    data.Get("forks").(int),
-		"limit":                    data.Get("limit").(string),
-		"verbosity":                data.Get("verbosity").(int),
-		"extra_vars":               data.Get("extra_vars").(string),
-		"job_tags":                 data.Get("job_tags").(string),
-		"force_handlers":           data.Get("force_handlers").(bool),
-		"skip_tags":                data.Get("skip_tags").(string),
-		"start_at_task":            data.Get("start_at_task").(string),
-		"timeout":                  data.Get("timeout").(int),
-		"use_fact_cache":           data.Get("use_fact_cache").(bool),
-		"host_config_key":          data.Get("host_config_key").(string),
-		"ask_diff_mode_on_launch":  data.Get("ask_diff_mode_on_launch").(bool),
-		"ask_variables_on_launch":  data.Get("ask_variables_on_launch").(bool),
-		"ask_limit_on_launch":      data.Get("ask_limit_on_launch").(bool),
-		"ask_tags_on_launch":       data.Get("ask_tags_on_launch").(bool),
-		"ask_skip_tags_on_launch":  data.Get("ask_skip_tags_on_launch").(bool),
-		"ask_job_type_on_launch":   data.Get("ask_job_type_on_launch").(bool),
-		"ask_verbosity_on_launch":  data.Get("ask_verbosity_on_launch").(bool),
-		"ask_inventory_on_launch":  data.Get("ask_inventory_on_launch").(bool),
-		"ask_credential_on_launch": data.Get("ask_credential_on_launch").(bool),
-		"survey_enabled":           data.Get("survey_enabled").(bool),
-		"become_enabled":           data.Get("become_enabled").(bool),
-		"diff_mode":                data.Get("diff_mode").(bool),
-		"allow_simultaneous":       data.Get("allow_simultaneous").(bool),
-		"custom_virtualenv":        data.Get("custom_virtualenv").(string),
-	}, map[string]string{})
+	_, err = awxService.UpdateJobTemplate(id, validateJobTemplateInput(data), map[string]string{})
 	if err != nil {
 		diags = append(diags, diag.Diagnostic{
 			Severity: diag.Error,
@@ -368,6 +334,45 @@ func setJobTemplateResourceData(data  *schema.ResourceData, r *tower.JobTemplate
 	data.Set("start_at_task", r.StartAtTask)
 	data.Set("survey_enabled", r.SurveyEnabled)
 	data.Set("verbosity", r.Verbosity)
+
 	data.SetId(getStateID(r.ID))
 	return data
+}
+
+func validateJobTemplateInput(data *schema.ResourceData) map[string]interface{} {
+	return map[string]interface{}{
+		"name":                     data.Get("name").(string),
+		"description":              data.Get("description").(string),
+		"job_type":                 data.Get("job_type").(string),
+		"inventory":                data.Get("inventory_id").(int),
+		"project":                  data.Get("project_id").(int),
+		"playbook":                 data.Get("playbook").(string),
+		"forks":                    data.Get("forks").(int),
+		"limit":                    data.Get("limit").(string),
+		"verbosity":                data.Get("verbosity").(int),
+		"extra_vars":               data.Get("extra_vars").(string),
+		"job_tags":                 data.Get("job_tags").(string),
+		"force_handlers":           data.Get("force_handlers").(bool),
+		"skip_tags":                data.Get("skip_tags").(string),
+		"start_at_task":            data.Get("start_at_task").(string),
+		"timeout":                  data.Get("timeout").(int),
+		"use_fact_cache":           data.Get("use_fact_cache").(bool),
+		"host_config_key":          data.Get("host_config_key").(string),
+		"ask_diff_mode_on_launch":  data.Get("ask_diff_mode_on_launch").(bool),
+		"ask_variables_on_launch":  data.Get("ask_variables_on_launch").(bool),
+		"ask_limit_on_launch":      data.Get("ask_limit_on_launch").(bool),
+		"ask_tags_on_launch":       data.Get("ask_tags_on_launch").(bool),
+		"ask_skip_tags_on_launch":  data.Get("ask_skip_tags_on_launch").(bool),
+		"ask_job_type_on_launch":   data.Get("ask_job_type_on_launch").(bool),
+		"ask_verbosity_on_launch":  data.Get("ask_verbosity_on_launch").(bool),
+		"ask_inventory_on_launch":  data.Get("ask_inventory_on_launch").(bool),
+		"ask_credential_on_launch": data.Get("ask_credential_on_launch").(bool),
+		"survey_enabled":           data.Get("survey_enabled").(bool),
+		"become_enabled":           data.Get("become_enabled").(bool),
+		"diff_mode":                data.Get("diff_mode").(bool),
+		"allow_simultaneous":       data.Get("allow_simultaneous").(bool),
+		"custom_virtualenv":        data.Get("custom_virtualenv").(string),
+
+	}
+
 }

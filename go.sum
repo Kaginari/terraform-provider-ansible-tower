@@ -32,8 +32,8 @@ cloud.google.com/go/storage v1.10.0/go.mod h1:FLPqc6j+Ki4BU591ie1oL6qBQGu2Bl/tZ9
 dmitri.shuralyov.com/gpu/mtl v0.0.0-20190408044501-666a987793e9/go.mod h1:H6x//7gZCb22OMCxBHrMx7a5I7Hp++hsVxbQ4BYO7hU=
 github.com/BurntSushi/toml v0.3.1/go.mod h1:xHWCNGjB5oqiDr8zfno3MHue2Ht5sIBksp03qcyfWMU=
 github.com/BurntSushi/xgb v0.0.0-20160522181843-27f122750802/go.mod h1:IVnqGOEym/WlBOVXweHU+Q+/VP0lqqI8lqeDx9IjBqo=
-github.com/Kaginari/ansible-tower-sdk v0.1.3-0.20211024111317-f96e992e4f82 h1:FgegU1sjEzZpXvsor/St8a7jzivh4DAPGWqV4g+xkDM=
-github.com/Kaginari/ansible-tower-sdk v0.1.3-0.20211024111317-f96e992e4f82/go.mod h1:Dj/0K6L+RJ0WEMMEfL84EXWUgUCqkfu1utT3FVi+fIk=
+github.com/Kaginari/ansible-tower-sdk v0.1.3-0.20211025144913-5aeb2af2aa8c h1:I91N0P6uffyVCHt5j/tvU01LL1kxzrzBZPnRqH3LB38=
+github.com/Kaginari/ansible-tower-sdk v0.1.3-0.20211025144913-5aeb2af2aa8c/go.mod h1:Dj/0K6L+RJ0WEMMEfL84EXWUgUCqkfu1utT3FVi+fIk=
 github.com/Masterminds/goutils v1.1.0/go.mod h1:8cTjp+g8YejhMuvIA5y2vz3BpJxksy863GQaJW2MFNU=
 github.com/Masterminds/semver v1.5.0/go.mod h1:MB6lktGJrhw8PrUyiEoblNEGEQ+RzHPF078ddwwvV3Y=
 github.com/Masterminds/sprig v2.22.0+incompatible/go.mod h1:y6hNFY5UBTIWBxnzTeuNhlNS5hqE0NB0E6fgfo2Br3o=

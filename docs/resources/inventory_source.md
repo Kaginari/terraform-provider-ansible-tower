@@ -1,5 +1,5 @@
 
-**# ansible-tower_inventory_source
+# ansible-tower_inventory_source
 
 `ansible-tower_inventory_source` Inventory source 
 * currently, supports [source](#source) : 

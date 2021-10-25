@@ -81,10 +81,11 @@ resource "ansible-tower_inventory_source" "source" {
 
 }
 resource "ansible-tower_job_template" "template" {
+
   name           = "test-job-template"
-  job_type       = "run"
   inventory_id   = ansible-tower_inventory.inventory.id
   project_id     = ansible-tower_project.vault.id
   playbook       = "main.yml"
+  job_type       = "run"
   become_enabled = true
 }
