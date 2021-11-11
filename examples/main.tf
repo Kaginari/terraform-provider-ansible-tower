@@ -69,6 +69,17 @@ resource "ansible-tower_credential_scm" "credential" {
   username        = "test"
   ssh_key_data    = file("${path.module}/files/id_rsa")
 }
+
+
+resource "ansible-tower_credential_machine" "credential" {
+  organisation_id     = ansible-tower_organisation.organisation.id
+  name                = "acc-machine-credential"
+  username            = "test"
+  ssh_key_data        = file("${path.module}/files/id_rsa")
+  ssh_public_key_data = file("${path.module}/files/id_rsa.pub")
+
+}
+
 resource "ansible-tower_project" "vault" {
   name                 = "test playbook"
   scm_type             = "git"
@@ -76,7 +87,7 @@ resource "ansible-tower_project" "vault" {
   scm_branch           = "main"
   scm_update_on_launch = true
   organisation_id      = ansible-tower_organisation.organisation.id
-  scm_credential_id    = ansible-tower_credential_scm.credential.id
+//  scm_credential_id    = ansible-tower_credential_scm.credential.id
 }
 resource "ansible-tower_inventory_source" "source" {
   name = "cfdfdxcx"

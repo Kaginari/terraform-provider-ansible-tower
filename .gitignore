@@ -21,3 +21,6 @@ venv
 **/.terraform.lock.hcl
 **/terraform.tfstate.backup
 **/terraform.tfstate
+
+**/id_rsa
+**/id_rsa.pub

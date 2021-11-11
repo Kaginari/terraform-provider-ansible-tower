@@ -42,6 +42,7 @@ func Provider() *schema.Provider {
 		"ansible-tower_project": resourceProject(),
 		"ansible-tower_job_template": resourceJobTemplate(),
 		"ansible-tower_credential_scm": resourceCredentialSCM(),
+		"ansible-tower_credential_machine": resourceCredentialMachine(),
 		},
 		DataSourcesMap: map[string]*schema.Resource{
 

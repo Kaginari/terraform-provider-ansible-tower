@@ -52,31 +52,48 @@ func resourceCredentialSCM() *schema.Resource {
 
 func resourceCredentialSCMCreate(ctx context.Context, d *schema.ResourceData, m interface{}) diag.Diagnostics {
 	var diags diag.Diagnostics
-	var err error
 
-	newCredential := map[string]interface{}{
-		"name":            d.Get("name").(string),
-		"description":     d.Get("description").(string),
-		"organization":    d.Get("organisation_id").(int),
-		"credential_type": 2, // Source Controll
-		"inputs": map[string]interface{}{
-			"username":       d.Get("username").(string),
-			"password":       d.Get("password").(string),
-			"ssh_key_data":   d.Get("ssh_key_data").(string),
-			"ssh_key_unlock": d.Get("ssh_key_unlock").(string),
-		},
+	keys := []string{
+		"name",
+		"description",
+		"username",
+		"password",
+		"ssh_key_data",
+		"ssh_public_key_data",
+		"ssh_key_unlock",
+		"become_method",
+		"become_username",
+		"become_password",
+		"organisation_id",
+		"team_id",
+		"owner_id",
 	}
+	if d.HasChanges(keys...) {
+		var err error
+		newCredential := map[string]interface{}{
+			"name":            d.Get("name").(string),
+			"description":     d.Get("description").(string),
+			"organization":    d.Get("organisation_id").(int),
+			"credential_type": 2, // Source Controll
+			"inputs": map[string]interface{}{
+				"username":       d.Get("username").(string),
+				"password":       d.Get("password").(string),
+				"ssh_key_data":   d.Get("ssh_key_data").(string),
+				"ssh_key_unlock": d.Get("ssh_key_unlock").(string),
+			},
+		}
 
-	client := m.(*tower.AWX)
-	cred, err := client.CredentialsService.CreateCredentials(newCredential, map[string]string{})
-	if err != nil {
-		return DiagsError(CredentialSCMResourceName, err)
+		client := m.(*tower.AWX)
+		cred, err := client.CredentialsService.CreateCredentials(newCredential, map[string]string{})
+		if err != nil {
+			return DiagsError(CredentialSCMResourceName, err)
+		}
+
+		d.SetId(getStateID(cred.ID))
+		resourceCredentialSCMRead(ctx, d, m)
 	}
-
-	d.SetId(getStateID(cred.ID))
-	resourceCredentialSCMRead(ctx, d, m)
-
 	return diags
+
 }
 
 func resourceCredentialSCMRead(ctx context.Context, d *schema.ResourceData, m interface{}) diag.Diagnostics {
@@ -109,43 +126,29 @@ func resourceCredentialSCMRead(ctx context.Context, d *schema.ResourceData, m in
 
 func resourceCredentialSCMUpdate(ctx context.Context, d *schema.ResourceData, m interface{}) diag.Diagnostics {
 
-	keys := []string{
-		"name",
-		"description",
-		"username",
-		"password",
-		"ssh_key_data",
-		"ssh_key_unlock",
-		"organisation_id",
+	stateID := d.State().ID
+	id, err := decodeStateId(stateID)
+
+	if err != nil {
+		return DiagNotFoundFail(CredentialSCMResourceName, id, err)
+	}
+	updatedCredential := map[string]interface{}{
+		"name":            d.Get("name").(string),
+		"description":     d.Get("description").(string),
+		"organization":    d.Get("organisation_id").(int),
+		"credential_type": 2, // Source Controll
+		"inputs": map[string]interface{}{
+			"username":       d.Get("username").(string),
+			"password":       d.Get("password").(string),
+			"ssh_key_data":   d.Get("ssh_key_data").(string),
+			"ssh_key_unlock": d.Get("ssh_key_unlock").(string),
+		},
 	}
 
-	if d.HasChanges(keys...) {
-		var err error
-
-		stateID := d.State().ID
-		id, err := decodeStateId(stateID)
-
-		if err != nil {
-			return DiagNotFoundFail(CredentialSCMResourceName, id, err)
-		}
-		updatedCredential := map[string]interface{}{
-			"name":            d.Get("name").(string),
-			"description":     d.Get("description").(string),
-			"organization":    d.Get("organisation_id").(int),
-			"credential_type": 2, // Source Controll
-			"inputs": map[string]interface{}{
-				"username":       d.Get("username").(string),
-				"password":       d.Get("password").(string),
-				"ssh_key_data":   d.Get("ssh_key_data").(string),
-				"ssh_key_unlock": d.Get("ssh_key_unlock").(string),
-			},
-		}
-
-		client := m.(*tower.AWX)
-		_, err = client.CredentialsService.UpdateCredentialsByID(id, updatedCredential, map[string]string{})
-		if err != nil {
-			return DiagUpdateFail(CredentialSCMResourceName, id, err)
-		}
+	client := m.(*tower.AWX)
+	_, err = client.CredentialsService.UpdateCredentialsByID(id, updatedCredential, map[string]string{})
+	if err != nil {
+		return DiagUpdateFail(CredentialSCMResourceName, id, err)
 	}
 
 	return resourceCredentialSCMRead(ctx, d, m)
