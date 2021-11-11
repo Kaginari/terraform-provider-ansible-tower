@@ -47,7 +47,7 @@ func resourceInventory() *schema.Resource {
 				Optional: true,
 				Default:  "",
 			},
-			"variable": {
+			"inv_var": {
 				Type:     schema.TypeSet,
 				Optional: true,
 				MaxItems: 10,
@@ -72,7 +72,7 @@ func resourceInventoryCreate(ctx context.Context, d *schema.ResourceData, m inte
 	client := m.(*tower.AWX)
 	towerService := client.InventoriesService
 	var vars []Variable
-	list := d.Get("variable").(*schema.Set).List()
+	list := d.Get("inv_var").(*schema.Set).List()
 	err := mapstructure.Decode(list, &vars)
 	if err != nil {
 		return DiagsError(InventoryResourceName, err)
@@ -104,7 +104,7 @@ func resourceInventoryUpdate(ctx context.Context, d *schema.ResourceData, m inte
 		return DiagNotFoundFail(InventoryResourceName, id, err)
 	}
 	var vars []Variable
-	list := d.Get("variable").(*schema.Set).List()
+	list := d.Get("inv_var").(*schema.Set).List()
 	err = mapstructure.Decode(list, &vars)
 	if err != nil {
 		return DiagsError(InventoryResourceName, err)

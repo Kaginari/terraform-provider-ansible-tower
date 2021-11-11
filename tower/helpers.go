@@ -9,6 +9,7 @@ const (
 	OrganisationResourceName	= "Ansible tower Organisation"
 	InventorySourceResourceName = "Ansible tower inventory source"
 	InventoryScriptResourceName = "Ansible tower inventory script"
+	CredentialSCMResourceName 	= "Ansible tower credential scm"
 )
 const (
 	InfoColor    = "\033[1;34m[Info] : %s\033[0m"

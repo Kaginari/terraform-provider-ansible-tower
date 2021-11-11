@@ -37,11 +37,11 @@ resource "ansible-tower_inventory" "inventory" {
   organisation_id = ansible-tower_organisation.organisation.id
   kind = ""
   host_filter = ""
-  variable {
+  inv_var {
     key = "sas"
     value = "sasaa"
   }
-  variable {
+  inv_var {
     key = "monta"
     value = "[ a , b ]"
   }
@@ -63,7 +63,12 @@ resource "ansible-tower_inventory_source" "source_custom_script" {
   source = "custom"
   source_script = ansible-tower_inventory_script.script.id
 }
-
+resource "ansible-tower_credential_scm" "credential" {
+  organisation_id = ansible-tower_organisation.organisation.id
+  name            = "acc-scm-credential"
+  username        = "test"
+  ssh_key_data    = file("${path.module}/files/id_rsa")
+}
 resource "ansible-tower_project" "vault" {
   name                 = "test playbook"
   scm_type             = "git"
@@ -71,6 +76,7 @@ resource "ansible-tower_project" "vault" {
   scm_branch           = "main"
   scm_update_on_launch = true
   organisation_id      = ansible-tower_organisation.organisation.id
+  scm_credential_id    = ansible-tower_credential_scm.credential.id
 }
 resource "ansible-tower_inventory_source" "source" {
   name = "cfdfdxcx"
@@ -81,7 +87,6 @@ resource "ansible-tower_inventory_source" "source" {
 
 }
 resource "ansible-tower_job_template" "template" {
-
   name           = "test-job-template"
   inventory_id   = ansible-tower_inventory.inventory.id
   project_id     = ansible-tower_project.vault.id

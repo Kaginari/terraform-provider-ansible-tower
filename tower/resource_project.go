@@ -130,7 +130,6 @@ func resourceProjectCreate(ctx context.Context, d *schema.ResourceData, m interf
 		"scm_delete_on_update": d.Get("scm_delete_on_update").(bool),
 		"organization":         d.Get("organisation_id").(int),
 		"credential":           credentials,
-
 		"scm_update_on_launch":     d.Get("scm_update_on_launch").(bool),
 		"scm_update_cache_timeout": d.Get("scm_update_cache_timeout").(int),
 	}, map[string]string{})
