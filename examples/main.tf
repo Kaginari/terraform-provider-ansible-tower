@@ -120,4 +120,11 @@ resource "ansible-tower_credential_type" "type2" {
     secret = true
   }
 
+  input {
+    id = "url"
+    type = "string"
+    label = "URI"
+    format = "url"
+    multiline = false
+  }
 }
