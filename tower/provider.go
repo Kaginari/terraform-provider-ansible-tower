@@ -8,6 +8,7 @@ import (
 	"github.com/hashicorp/terraform-plugin-sdk/v2/helper/schema"
 	"net/http"
 )
+
 func Provider() *schema.Provider {
 	return &schema.Provider{
 		Schema: map[string]*schema.Schema{
@@ -35,18 +36,17 @@ func Provider() *schema.Provider {
 			},
 		},
 		ResourcesMap: map[string]*schema.Resource{
-		"ansible-tower_inventory": resourceInventory(),
-		"ansible-tower_organisation": resourceOrganization(),
-		"ansible-tower_inventory_source": resourceInventorySource(),
-		"ansible-tower_inventory_script": resourceInventoryScript(),
-		"ansible-tower_project": resourceProject(),
-		"ansible-tower_job_template": resourceJobTemplate(),
-		"ansible-tower_credential_scm": resourceCredentialSCM(),
-		"ansible-tower_credential_machine": resourceCredentialMachine(),
+			"ansible-tower_inventory":          resourceInventory(),
+			"ansible-tower_organisation":       resourceOrganization(),
+			"ansible-tower_inventory_source":   resourceInventorySource(),
+			"ansible-tower_inventory_script":   resourceInventoryScript(),
+			"ansible-tower_project":            resourceProject(),
+			"ansible-tower_job_template":       resourceJobTemplate(),
+			"ansible-tower_credential_scm":     resourceCredentialSCM(),
+			"ansible-tower_credential_machine": resourceCredentialMachine(),
+			"ansible-tower_credential_type": 	resourceCredentialType(),
 		},
-		DataSourcesMap: map[string]*schema.Resource{
-
-		},
+		DataSourcesMap:       map[string]*schema.Resource{},
 		ConfigureContextFunc: providerConfigure,
 	}
 }

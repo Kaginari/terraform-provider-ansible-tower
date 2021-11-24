@@ -40,7 +40,6 @@ func resourceInventoryScript() *schema.Resource {
 				Required: true,
 			},
 		},
-
 	}
 }
 
@@ -73,11 +72,11 @@ func resourceInventoryScriptUpdate(ctx context.Context, data *schema.ResourceDat
 		return DiagNotFoundFail(InventoryScriptResourceName, id, err)
 	}
 
-	res, err := awxService.UpdateInventoryScript(id,map[string]interface{}{
-		"name":              data.Get("name").(string),
-		"description":       data.Get("description").(string),
-		"organization":   	 data.Get("organization_id").(int),
-		"script": 			 data.Get("script").(string),
+	res, err := awxService.UpdateInventoryScript(id, map[string]interface{}{
+		"name":         data.Get("name").(string),
+		"description":  data.Get("description").(string),
+		"organization": data.Get("organization_id").(int),
+		"script":       data.Get("script").(string),
 	}, nil)
 
 	if err != nil {
@@ -88,17 +87,15 @@ func resourceInventoryScriptUpdate(ctx context.Context, data *schema.ResourceDat
 	return resourceInventoryScriptRead(ctx, data, i)
 }
 
-
-
 func resourceInventoryScriptCreate(ctx context.Context, data *schema.ResourceData, i interface{}) diag.Diagnostics {
 	client := i.(*tower.AWX)
 	awxService := client.InventoryScriptsService
 
 	result, err := awxService.CreateInventoryScript(map[string]interface{}{
-		"name":              data.Get("name").(string),
-		"description":       data.Get("description").(string),
-		"organization":   	 data.Get("organization_id").(int),
-		"script": 			 data.Get("script").(string),
+		"name":         data.Get("name").(string),
+		"description":  data.Get("description").(string),
+		"organization": data.Get("organization_id").(int),
+		"script":       data.Get("script").(string),
 	}, map[string]string{})
 
 	if err != nil {
@@ -106,7 +103,7 @@ func resourceInventoryScriptCreate(ctx context.Context, data *schema.ResourceDat
 	}
 
 	data.SetId(getStateID(result.ID))
-	return resourceInventoryScriptRead(ctx,data, i)
+	return resourceInventoryScriptRead(ctx, data, i)
 }
 func resourceInventoryScriptRead(ctx context.Context, data *schema.ResourceData, i interface{}) diag.Diagnostics {
 	client := i.(*tower.AWX)
@@ -125,7 +122,7 @@ func resourceInventoryScriptRead(ctx context.Context, data *schema.ResourceData,
 	return nil
 }
 
-func setInventoryScriptResourceData(d *schema.ResourceData, r *tower.InventoryScript) (*schema.ResourceData , diag.Diagnostics) {
+func setInventoryScriptResourceData(d *schema.ResourceData, r *tower.InventoryScript) (*schema.ResourceData, diag.Diagnostics) {
 
 	d.Set("name", r.Name)
 	d.Set("description", r.Description)
@@ -134,5 +131,5 @@ func setInventoryScriptResourceData(d *schema.ResourceData, r *tower.InventorySc
 
 	d.SetId(getStateID(r.ID))
 
-	return d , nil
+	return d, nil
 }

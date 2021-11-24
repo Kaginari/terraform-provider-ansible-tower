@@ -120,16 +120,16 @@ func resourceProjectCreate(ctx context.Context, d *schema.ResourceData, m interf
 		credentials = strconv.Itoa(d.Get("scm_credential_id").(int))
 	}
 	result, err := awxService.CreateProject(map[string]interface{}{
-		"name":                 projectName,
-		"description":          d.Get("description").(string),
-		"local_path":           d.Get("local_path").(string),
-		"scm_type":             d.Get("scm_type").(string),
-		"scm_url":              d.Get("scm_url").(string),
-		"scm_branch":           d.Get("scm_branch").(string),
-		"scm_clean":            d.Get("scm_clean").(bool),
-		"scm_delete_on_update": d.Get("scm_delete_on_update").(bool),
-		"organization":         d.Get("organisation_id").(int),
-		"credential":           credentials,
+		"name":                     projectName,
+		"description":              d.Get("description").(string),
+		"local_path":               d.Get("local_path").(string),
+		"scm_type":                 d.Get("scm_type").(string),
+		"scm_url":                  d.Get("scm_url").(string),
+		"scm_branch":               d.Get("scm_branch").(string),
+		"scm_clean":                d.Get("scm_clean").(bool),
+		"scm_delete_on_update":     d.Get("scm_delete_on_update").(bool),
+		"organization":             d.Get("organisation_id").(int),
+		"credential":               credentials,
 		"scm_update_on_launch":     d.Get("scm_update_on_launch").(bool),
 		"scm_update_cache_timeout": d.Get("scm_update_cache_timeout").(int),
 	}, map[string]string{})
@@ -169,7 +169,7 @@ func resourceProjectUpdate(ctx context.Context, d *schema.ResourceData, m interf
 		"scm_update_cache_timeout": d.Get("scm_update_cache_timeout").(int),
 	}, map[string]string{})
 	if err != nil {
-		return DiagnosticsMessage("Update: Fail To Update Project",fmt.Sprintf("Fail to get Project with ID %v, got %s", id, err.Error()))
+		return DiagnosticsMessage("Update: Fail To Update Project", fmt.Sprintf("Fail to get Project with ID %v, got %s", id, err.Error()))
 	}
 	return resourceProjectRead(ctx, d, m)
 }
@@ -225,7 +225,7 @@ func resourceProjectDelete(ctx context.Context, d *schema.ResourceData, m interf
 			return DiagnosticsMessage(
 				"Delete: Fail to canel Job",
 				fmt.Sprintf("Fail to canel the Job %v for Project with ID %v, got %s",
-				jobID, id, err.Error()),
+					jobID, id, err.Error()),
 			)
 		}
 	}

@@ -77,7 +77,7 @@ func resourceJobTemplate() *schema.Resource {
 				ValidateFunc: func(val interface{}, key string) (warns []string, errs []error) {
 					value := val.(int)
 					isTrue := false
-					list := []int{0,1,2,3,4,5}
+					list := []int{0, 1, 2, 3, 4, 5}
 					for _, element := range list {
 						if element == value {
 							isTrue = true
@@ -211,7 +211,7 @@ func resourceJobTemplate() *schema.Resource {
 	}
 }
 
-func resourceJobTemplateCreate(ctx context.Context, data  *schema.ResourceData, i interface{}) diag.Diagnostics {
+func resourceJobTemplateCreate(ctx context.Context, data *schema.ResourceData, i interface{}) diag.Diagnostics {
 	var diags diag.Diagnostics
 	client := i.(*tower.AWX)
 	awxService := client.JobTemplateService
@@ -233,7 +233,7 @@ func resourceJobTemplateCreate(ctx context.Context, data  *schema.ResourceData, 
 	return resourceJobTemplateRead(ctx, data, i)
 }
 
-func resourceJobTemplateUpdate(ctx context.Context, data  *schema.ResourceData, i interface{}) diag.Diagnostics {
+func resourceJobTemplateUpdate(ctx context.Context, data *schema.ResourceData, i interface{}) diag.Diagnostics {
 	var diags diag.Diagnostics
 	client := i.(*tower.AWX)
 	awxService := client.JobTemplateService
@@ -262,7 +262,7 @@ func resourceJobTemplateUpdate(ctx context.Context, data  *schema.ResourceData, 
 
 	return resourceJobTemplateRead(ctx, data, i)
 }
-func resourceJobTemplateDelete(ctx context.Context, data  *schema.ResourceData, i interface{}) diag.Diagnostics {
+func resourceJobTemplateDelete(ctx context.Context, data *schema.ResourceData, i interface{}) diag.Diagnostics {
 	var diags diag.Diagnostics
 	client := i.(*tower.AWX)
 	awxService := client.JobTemplateService
@@ -285,7 +285,7 @@ func resourceJobTemplateDelete(ctx context.Context, data  *schema.ResourceData, 
 	data.SetId("")
 	return diags
 }
-func resourceJobTemplateRead(ctx context.Context, data  *schema.ResourceData, i interface{}) diag.Diagnostics {
+func resourceJobTemplateRead(ctx context.Context, data *schema.ResourceData, i interface{}) diag.Diagnostics {
 	var diags diag.Diagnostics
 	client := i.(*tower.AWX)
 	awxService := client.JobTemplateService
@@ -296,7 +296,6 @@ func resourceJobTemplateRead(ctx context.Context, data  *schema.ResourceData, i 
 		return DiagNotFoundFail(InventoryScriptResourceName, id, err)
 	}
 
-
 	res, err := awxService.GetJobTemplateByID(id, make(map[string]string))
 	if err != nil {
 		return DiagNotFoundFail("job template", id, err)
@@ -306,7 +305,7 @@ func resourceJobTemplateRead(ctx context.Context, data  *schema.ResourceData, i 
 	return diags
 }
 
-func setJobTemplateResourceData(data  *schema.ResourceData, r *tower.JobTemplate) *schema.ResourceData {
+func setJobTemplateResourceData(data *schema.ResourceData, r *tower.JobTemplate) *schema.ResourceData {
 	data.Set("allow_simultaneous", r.AllowSimultaneous)
 	data.Set("ask_credential_on_launch", r.AskCredentialOnLaunch)
 	data.Set("ask_job_type_on_launch", r.AskJobTypeOnLaunch)
@@ -372,7 +371,6 @@ func validateJobTemplateInput(data *schema.ResourceData) map[string]interface{} 
 		"diff_mode":                data.Get("diff_mode").(bool),
 		"allow_simultaneous":       data.Get("allow_simultaneous").(bool),
 		"custom_virtualenv":        data.Get("custom_virtualenv").(string),
-
 	}
 
 }

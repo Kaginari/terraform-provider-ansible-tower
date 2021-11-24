@@ -5,14 +5,14 @@ import (
 )
 
 type Variable struct {
-	Key string `json:"key"`
-	Value   string `json:"value"`
+	Key   string `json:"key"`
+	Value string `json:"value"`
 }
 
-func CreateInventoryVariables(variables []Variable)  string{
+func CreateInventoryVariables(variables []Variable) string {
 	var result bytes.Buffer
 	result.WriteString("{")
-	for index , element := range variables {
+	for index, element := range variables {
 		if index != 0 {
 			result.WriteString(",")
 		}

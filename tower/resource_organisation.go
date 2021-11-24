@@ -39,7 +39,6 @@ func resourceOrganization() *schema.Resource {
 				Description: "Local absolute file path containing a custom Python virtualenv to use",
 			},
 		},
-
 	}
 }
 
@@ -72,12 +71,12 @@ func resourceOrganizationsUpdate(ctx context.Context, d *schema.ResourceData, m 
 	}
 	params := make(map[string]string)
 
-	_ , err = awxService.GetOrganizationsByID(id, params)
+	_, err = awxService.GetOrganizationsByID(id, params)
 	if err != nil {
 		return DiagNotFoundFail("Organizations", id, err)
 	}
 
-	_ , err = awxService.UpdateOrganization(id, map[string]interface{}{
+	_, err = awxService.UpdateOrganization(id, map[string]interface{}{
 		"name":              d.Get("name").(string),
 		"description":       d.Get("description").(string),
 		"max_hosts":         d.Get("max_hosts").(int),
@@ -139,7 +138,7 @@ func setOrganizationsResourceData(d *schema.ResourceData, r *tower.Organizations
 	d.Set("name", r.Name)
 	d.Set("description", r.Description)
 	d.Set("max_hosts", r.MaxHosts)
-	d.Set("custom_virtualenv" , r.CustomVirtualenv)
+	d.Set("custom_virtualenv", r.CustomVirtualenv)
 	d.SetId(getStateID(r.ID))
 	return d
 }

@@ -54,7 +54,7 @@ func resourceInventorySource() *schema.Resource {
 				ValidateFunc: func(val interface{}, key string) (warns []string, errs []error) {
 					value := val.(string)
 					isTrue := false
-					list := []string{"file", "scm", "ec2", "gce", "azure_rm", "vmware", "satellite6", "openstack", "rhv", "tower", "custom" }
+					list := []string{"file", "scm", "ec2", "gce", "azure_rm", "vmware", "satellite6", "openstack", "rhv", "tower", "custom"}
 					for _, element := range list {
 						if element == value {
 							isTrue = true
@@ -69,7 +69,6 @@ func resourceInventorySource() *schema.Resource {
 			"source_project_id": &schema.Schema{
 				Type:     schema.TypeInt,
 				Optional: true,
-
 			},
 			"source_path": &schema.Schema{
 				Type:     schema.TypeString,
@@ -81,7 +80,6 @@ func resourceInventorySource() *schema.Resource {
 				Type:     schema.TypeInt,
 				Optional: true,
 				ForceNew: true,
-
 			},
 			"credential_id": &schema.Schema{
 				Type:     schema.TypeInt,
@@ -90,10 +88,9 @@ func resourceInventorySource() *schema.Resource {
 			"overwrite": &schema.Schema{
 				Type:     schema.TypeBool,
 				Optional: true,
-				Default: false,
+				Default:  false,
 			},
 		},
-
 	}
 }
 
@@ -122,7 +119,7 @@ func resourceInventorySourceUpdate(ctx context.Context, d *schema.ResourceData, 
 		return DiagNotFoundFail(InventorySourceResourceName, id, err)
 	}
 
-	res, err := awxService.UpdateInventorySource(id,validateInventoryInput(d), nil)
+	res, err := awxService.UpdateInventorySource(id, validateInventoryInput(d), nil)
 
 	if err != nil {
 
@@ -168,7 +165,7 @@ func resourceInventorySourceRead(ctx context.Context, d *schema.ResourceData, m 
 	return nil
 }
 
-func setInventorySourceResourceData(d *schema.ResourceData, r *tower.InventorySource) (*schema.ResourceData , diag.Diagnostics) {
+func setInventorySourceResourceData(d *schema.ResourceData, r *tower.InventorySource) (*schema.ResourceData, diag.Diagnostics) {
 
 	d.Set("name", r.Name)
 	d.Set("inventory_id", r.Inventory)
@@ -177,14 +174,14 @@ func setInventorySourceResourceData(d *schema.ResourceData, r *tower.InventorySo
 	d.Set("source", r.Source)
 	d.Set("source_project_id", r.SourceProject)
 	d.Set("source_path", r.SourcePath)
-	d.Set("source_script" , r.SourceScript)
+	d.Set("source_script", r.SourceScript)
 	d.SetId(getStateID(r.ID))
 
-	return d , nil
+	return d, nil
 }
 func validateInventoryInput(d *schema.ResourceData) map[string]interface{} {
 
-	var credential ,projectId , sourceScript interface{}
+	var credential, projectId, sourceScript interface{}
 
 	if d.Get("credential_id").(int) != 0 {
 		credential = d.Get("credential_id").(int)
@@ -202,8 +199,6 @@ func validateInventoryInput(d *schema.ResourceData) map[string]interface{} {
 		sourceScript = nil
 	}
 
-
-
 	return map[string]interface{}{
 		"name":             d.Get("name").(string),
 		"inventory":        d.Get("inventory_id").(int),
@@ -214,7 +209,7 @@ func validateInventoryInput(d *schema.ResourceData) map[string]interface{} {
 		"source_project":   projectId,
 		"update_on_launch": d.Get("update_on_launch").(bool),
 		"source_path":      d.Get("source_path").(string),
-		"source_script":		sourceScript,
+		"source_script":    sourceScript,
 		"overwrite":        d.Get("overwrite").(bool),
 	}
 }

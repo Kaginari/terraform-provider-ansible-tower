@@ -105,3 +105,19 @@ resource "ansible-tower_job_template" "template" {
   job_type       = "run"
   become_enabled = true
 }
+
+resource "ansible-tower_credential_type" "type2" {
+  name           = "credential_type"
+  input {
+    id = "username"
+    type = "string"
+    label = "USERNAME"
+  }
+  input {
+    id = "password"
+    type = "string"
+    label = "PASSWORD"
+    secret = true
+  }
+
+}
