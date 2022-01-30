@@ -1,6 +1,6 @@
 module github.com/Kaginari/terraform-provider-ansible-tower
 
-go 1.15
+go 1.17
 
 require (
 	github.com/Kaginari/ansible-tower-sdk v0.1.4
