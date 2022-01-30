@@ -61,7 +61,7 @@ func resourceInventorySource() *schema.Resource {
 						}
 					}
 					if !isTrue {
-						errs = append(errs, fmt.Errorf("%q must be one of this elements %v, got: %d", key, list, value))
+						errs = append(errs, fmt.Errorf("%q must be one of this elements %v, got: %s", key, list, value))
 					}
 					return
 				},
