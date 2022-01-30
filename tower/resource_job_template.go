@@ -305,10 +305,12 @@ func resourceJobTemplateRead(ctx context.Context, data *schema.ResourceData, i i
 	return diags
 }
 
+//nolint:errcheck
 func setJobTemplateResourceData(data *schema.ResourceData, r *tower.JobTemplate) *schema.ResourceData {
 	data.Set("allow_simultaneous", r.AllowSimultaneous)
 	data.Set("ask_credential_on_launch", r.AskCredentialOnLaunch)
 	data.Set("ask_job_type_on_launch", r.AskJobTypeOnLaunch)
+
 	data.Set("ask_limit_on_launch", r.AskLimitOnLaunch)
 	data.Set("ask_skip_tags_on_launch", r.AskSkipTagsOnLaunch)
 	data.Set("ask_tags_on_launch", r.AskTagsOnLaunch)
@@ -333,7 +335,6 @@ func setJobTemplateResourceData(data *schema.ResourceData, r *tower.JobTemplate)
 	data.Set("start_at_task", r.StartAtTask)
 	data.Set("survey_enabled", r.SurveyEnabled)
 	data.Set("verbosity", r.Verbosity)
-
 	data.SetId(getStateID(r.ID))
 	return data
 }

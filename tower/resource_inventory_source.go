@@ -165,6 +165,7 @@ func resourceInventorySourceRead(ctx context.Context, d *schema.ResourceData, m 
 	return nil
 }
 
+//nolint:errcheck,unparam
 func setInventorySourceResourceData(d *schema.ResourceData, r *tower.InventorySource) (*schema.ResourceData, diag.Diagnostics) {
 
 	d.Set("name", r.Name)

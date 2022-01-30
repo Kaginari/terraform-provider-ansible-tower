@@ -4,6 +4,8 @@ import (
 	"fmt"
 )
 
+//inventorySourceValidations
+//nolint:deadcode,unused
 func inventorySourceValidations(source string, project int) error {
 	switch v := source; v {
 	case "scm":

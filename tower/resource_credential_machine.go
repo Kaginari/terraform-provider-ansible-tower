@@ -133,17 +133,51 @@ func resourceCredentialMachineRead(ctx context.Context, d *schema.ResourceData, 
 		return DiagNotFoundFail(CredentialMachineResourceName, id, err)
 	}
 
-	d.Set("name", cred.Name)
-	d.Set("description", cred.Description)
-	d.Set("username", cred.Inputs["username"])
-	d.Set("password", cred.Inputs["password"])
-	d.Set("ssh_key_data", cred.Inputs["ssh_key_data"])
-	d.Set("ssh_public_key_data", cred.Inputs["ssh_public_key_data"])
-	d.Set("ssh_key_unlock", cred.Inputs["ssh_key_unlock"])
-	d.Set("become_method", cred.Inputs["become_method"])
-	d.Set("become_username", cred.Inputs["become_username"])
-	d.Set("become_password", cred.Inputs["become_password"])
-	d.Set("organisation_id", cred.OrganizationID)
+	setErr := d.Set("name", cred.Name)
+	if setErr != nil {
+		return DiagsError(CredentialMachineResourceName, setErr)
+	}
+	setErr = d.Set("description", cred.Description)
+	if setErr != nil {
+		return DiagsError(CredentialMachineResourceName, setErr)
+	}
+	setErr = d.Set("username", cred.Inputs["username"])
+	if setErr != nil {
+		return DiagsError(CredentialMachineResourceName, setErr)
+	}
+	setErr = d.Set("password", cred.Inputs["password"])
+
+	if setErr != nil {
+		return DiagsError(CredentialMachineResourceName, setErr)
+	}
+	setErr = d.Set("ssh_key_data", cred.Inputs["ssh_key_data"])
+	if setErr != nil {
+		return DiagsError(CredentialMachineResourceName, setErr)
+	}
+	setErr = d.Set("ssh_public_key_data", cred.Inputs["ssh_public_key_data"])
+	if setErr != nil {
+		return DiagsError(CredentialMachineResourceName, setErr)
+	}
+	setErr = d.Set("ssh_key_unlock", cred.Inputs["ssh_key_unlock"])
+	if setErr != nil {
+		return DiagsError(CredentialMachineResourceName, setErr)
+	}
+	setErr = d.Set("become_method", cred.Inputs["become_method"])
+	if setErr != nil {
+		return DiagsError(CredentialMachineResourceName, setErr)
+	}
+	setErr = d.Set("become_username", cred.Inputs["become_username"])
+	if setErr != nil {
+		return DiagsError(CredentialMachineResourceName, setErr)
+	}
+	setErr = d.Set("become_password", cred.Inputs["become_password"])
+	if setErr != nil {
+		return DiagsError(CredentialMachineResourceName, setErr)
+	}
+	setErr = d.Set("organisation_id", cred.OrganizationID)
+	if setErr != nil {
+		return DiagsError(CredentialMachineResourceName, setErr)
+	}
 
 	return diags
 }

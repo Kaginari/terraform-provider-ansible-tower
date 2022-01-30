@@ -163,6 +163,7 @@ func resourceInventoryDelete(ctx context.Context, d *schema.ResourceData, m inte
 	return nil
 }
 
+//nolint:errcheck
 func setInventoryResourceData(d *schema.ResourceData, r *tower.Inventory) *schema.ResourceData {
 	d.Set("name", r.Name)
 	d.Set("organisation_id", strconv.Itoa(r.Organization))

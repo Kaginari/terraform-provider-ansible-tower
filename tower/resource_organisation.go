@@ -133,6 +133,7 @@ func resourceOrganizationsDelete(ctx context.Context, d *schema.ResourceData, m 
 	return diags
 }
 
+//nolint:errcheck
 func setOrganizationsResourceData(d *schema.ResourceData, r *tower.Organizations) *schema.ResourceData {
 
 	d.Set("name", r.Name)

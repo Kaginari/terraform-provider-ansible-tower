@@ -122,13 +122,13 @@ func resourceInventoryScriptRead(ctx context.Context, data *schema.ResourceData,
 	return nil
 }
 
+//nolint:errcheck,unparam
 func setInventoryScriptResourceData(d *schema.ResourceData, r *tower.InventoryScript) (*schema.ResourceData, diag.Diagnostics) {
 
 	d.Set("name", r.Name)
 	d.Set("description", r.Description)
 	d.Set("organization_id", r.Organization)
 	d.Set("script", r.Script)
-
 	d.SetId(getStateID(r.ID))
 
 	return d, nil

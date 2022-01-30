@@ -74,7 +74,7 @@ func resourceCredentialSCMCreate(ctx context.Context, d *schema.ResourceData, m 
 			"name":            d.Get("name").(string),
 			"description":     d.Get("description").(string),
 			"organization":    d.Get("organisation_id").(int),
-			"credential_type": 2, // Source Controll
+			"credential_type": 2,
 			"inputs": map[string]interface{}{
 				"username":       d.Get("username").(string),
 				"password":       d.Get("password").(string),
@@ -113,13 +113,35 @@ func resourceCredentialSCMRead(ctx context.Context, d *schema.ResourceData, m in
 		return DiagNotFoundFail(CredentialSCMResourceName, id, err)
 	}
 
-	d.Set("name", cred.Name)
-	d.Set("description", cred.Description)
-	d.Set("username", cred.Inputs["username"])
-	d.Set("password", cred.Inputs["password"])
-	d.Set("ssh_key_data", cred.Inputs["ssh_key_data"])
-	d.Set("ssh_key_unlock", cred.Inputs["ssh_key_unlock"])
-	d.Set("organisation_id", cred.OrganizationID)
+	setErr := d.Set("name", cred.Name)
+	if setErr != nil {
+		return DiagsError(CredentialSCMResourceName, setErr)
+	}
+	setErr = d.Set("description", cred.Description)
+	if setErr != nil {
+		return DiagsError(CredentialSCMResourceName, setErr)
+	}
+	setErr = d.Set("username", cred.Inputs["username"])
+	if setErr != nil {
+		return DiagsError(CredentialSCMResourceName, setErr)
+	}
+	setErr = d.Set("password", cred.Inputs["password"])
+	if setErr != nil {
+		return DiagsError(CredentialSCMResourceName, setErr)
+	}
+	setErr = d.Set("ssh_key_data", cred.Inputs["ssh_key_data"])
+	if setErr != nil {
+		return DiagsError(CredentialSCMResourceName, setErr)
+	}
+	setErr = d.Set("ssh_key_unlock", cred.Inputs["ssh_key_unlock"])
+	if setErr != nil {
+		return DiagsError(CredentialSCMResourceName, setErr)
+	}
+	setErr = d.Set("organisation_id", cred.OrganizationID)
+
+	if setErr != nil {
+		return DiagsError(CredentialSCMResourceName, setErr)
+	}
 
 	return diags
 }
@@ -136,7 +158,7 @@ func resourceCredentialSCMUpdate(ctx context.Context, d *schema.ResourceData, m 
 		"name":            d.Get("name").(string),
 		"description":     d.Get("description").(string),
 		"organization":    d.Get("organisation_id").(int),
-		"credential_type": 2, // Source Controll
+		"credential_type": 2,
 		"inputs": map[string]interface{}{
 			"username":       d.Get("username").(string),
 			"password":       d.Get("password").(string),

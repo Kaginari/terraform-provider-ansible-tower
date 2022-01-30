@@ -26,7 +26,7 @@ func resourceCredentialType() *schema.Resource {
 			"kind": {
 				Type:     schema.TypeString,
 				Optional: true,
-				Default: "cloud",
+				Default:  "cloud",
 			},
 			"input": {
 				Type:     schema.TypeSet,
@@ -44,32 +44,29 @@ func resourceCredentialType() *schema.Resource {
 							Required: true,
 						},
 						"label": {
-							Type: schema.TypeString,
+							Type:     schema.TypeString,
 							Optional: true,
 						},
 						"format": {
-							Type: schema.TypeString,
+							Type:     schema.TypeString,
 							Optional: true,
 						},
 						"help_text": {
-							Type: schema.TypeString,
+							Type:     schema.TypeString,
 							Optional: true,
 						},
 						"secret": {
-							Type: schema.TypeBool,
+							Type:     schema.TypeBool,
 							Optional: true,
 						},
 						"multiline": {
-							Type: schema.TypeBool,
+							Type:     schema.TypeBool,
 							Optional: true,
-							Default: false,
+							Default:  false,
 						},
-
-
 					},
 				},
 			},
-
 		},
 	}
 }
@@ -98,7 +95,7 @@ func resourceCredentialTypeDelete(ctx context.Context, data *schema.ResourceData
 	if err != nil {
 		return DiagsError(CredentialTypeResourceName, err)
 	}
-	if  err := awxService.DeleteCredentialsTypesByID(id,map[string]string{}); err != nil {
+	if err := awxService.DeleteCredentialsTypesByID(id, map[string]string{}); err != nil {
 		return DiagDeleteFail(
 			CredentialTypeResourceName,
 			fmt.Sprintf(
@@ -128,19 +125,17 @@ func resourceCredentialTypeUpdate(ctx context.Context, data *schema.ResourceData
 	}
 	credentialInputList := CreateCredentialInputs(inputs)
 	_, err = awxService.UpdateCredentialsTypesByID(id, map[string]interface{}{
-		"name"		:	data.Get("name").(string),
-		"kind"		:	data.Get("kind").(string),
-		"inputs"	: 	credentialInputList,
+		"name":   data.Get("name").(string),
+		"kind":   data.Get("kind").(string),
+		"inputs": credentialInputList,
 	}, nil)
 
 	if err != nil {
 		return DiagUpdateFail(CredentialTypeResourceName, id, err)
 	}
 
-	return resourceCredentialTypeRead(ctx,data,i)
+	return resourceCredentialTypeRead(ctx, data, i)
 }
-
-
 
 func resourceCredentialTypeCreate(ctx context.Context, data *schema.ResourceData, i interface{}) diag.Diagnostics {
 	client := i.(*tower.AWX)
@@ -153,21 +148,21 @@ func resourceCredentialTypeCreate(ctx context.Context, data *schema.ResourceData
 	}
 	credentialInputList := CreateCredentialInputs(inputs)
 	result, err := towerService.CreateCredentialsTypes(map[string]interface{}{
-		"name"		:	data.Get("name").(string),
-		"kind"		:	data.Get("kind").(string),
-		"inputs"	: 	credentialInputList,
+		"name":   data.Get("name").(string),
+		"kind":   data.Get("kind").(string),
+		"inputs": credentialInputList,
 	}, map[string]string{})
 	if err != nil {
 		return DiagsError(CredentialTypeResourceName, err)
 	}
 	data.SetId(getStateID(result.ID))
-	return resourceCredentialTypeRead(ctx,data,i)
+	return resourceCredentialTypeRead(ctx, data, i)
 }
 
+//nolint:errcheck
 func setCredentialTypeResourceData(d *schema.ResourceData, r *tower.CredentialType) *schema.ResourceData {
 	d.Set("name", r.Name)
 	d.Set("kind", r.Kind)
-
 	d.SetId(getStateID(r.ID))
 	return d
 }

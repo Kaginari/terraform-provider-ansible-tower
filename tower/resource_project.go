@@ -243,6 +243,7 @@ func resourceProjectDelete(ctx context.Context, d *schema.ResourceData, m interf
 	return diags
 }
 
+//nolint:errcheck
 func setProjectResourceData(d *schema.ResourceData, r *tower.Project) *schema.ResourceData {
 	d.Set("name", r.Name)
 	d.Set("description", r.Description)
